@@ -15,14 +15,13 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.style.TextOverflow
@@ -41,18 +40,6 @@ fun Rule(modifier: Modifier = Modifier, strong: Boolean = false) {
             .fillMaxWidth()
             .height(1.dp)
             .background(if (strong) c.rule else c.ruleFaint),
-    )
-}
-
-/** A vertical hairline, for gutters and column seams. */
-@Composable
-fun Seam(height: androidx.compose.ui.unit.Dp, modifier: Modifier = Modifier, color: Color? = null) {
-    val c = LocalHelm.current
-    Box(
-        modifier
-            .width(1.dp)
-            .height(height)
-            .background(color ?: c.ruleFaint),
     )
 }
 
@@ -140,9 +127,12 @@ fun LiveRail(
         RailPhase.Bad -> c.alarm
     }
     val color by animateColorAsState(target, tween(Motion.SettleMs), label = "rail")
-    val pulse by if (lit && !Motion.reduced) Motion.working() else remember {
-        androidx.compose.runtime.mutableFloatStateOf(1f)
+    val pulseState = if (lit && !Motion.reduced) {
+        Motion.working()
+    } else {
+        remember { mutableFloatStateOf(1f) }
     }
+    val pulse by pulseState
     Box(
         modifier
             .width(thickness)
@@ -161,12 +151,12 @@ fun RailTick(outcome: TickOutcome, modifier: Modifier = Modifier) {
         TickOutcome.Good -> c.moss
         TickOutcome.Bad -> c.alarm
     }
-    val width by animateColorAsState(color, tween(Motion.SettleMs), label = "tick")
+    val color by animateColorAsState(color, tween(Motion.SettleMs), label = "tick")
     Box(
         modifier
             .width(10.dp)
             .height(2.dp)
-            .background(width),
+            .background(color),
     )
 }
 
@@ -203,10 +193,4 @@ fun ReadoutRow(
         }
         Spacer(Modifier.weight(1f))
     }
-}
-
-/** Fades secondary content without changing its size — used for placeholder rows. */
-@Composable
-fun Quiet(content: @Composable () -> Unit) {
-    Box(Modifier.alpha(0.55f)) { content() }
 }

@@ -149,29 +149,6 @@ fun HelmBar(
     }
 }
 
-/** A 48dp square icon button sized for a thumb, drawn without a chip. */
-@Composable
-fun IconTap(
-    icon: androidx.compose.ui.graphics.vector.ImageVector,
-    description: String,
-    onClick: () -> Unit,
-    modifier: Modifier = Modifier,
-    tint: Color = LocalHelm.current.textMuted,
-    enabled: Boolean = true,
-    size: androidx.compose.ui.unit.Dp = 44.dp,
-) {
-    Box(
-        modifier
-            .size(size)
-            .then(if (enabled) Modifier else Modifier),
-        contentAlignment = Alignment.Center,
-    ) {
-        PanelTap(onClick, enabled = enabled) {
-            Icon(icon, contentDescription = description, tint = tint, modifier = Modifier.size(20.dp))
-        }
-    }
-}
-
 /**
  * The empty state's shape: left-aligned, on the same margin as everything else,
  * with the mark above it. A screen with nothing on it should read as an

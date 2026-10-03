@@ -35,6 +35,10 @@ import dev.helm.hermes.Link
 import dev.helm.hermes.Session
 import dev.helm.hermes.ui.Format
 import dev.helm.hermes.ui.components.EmptyState
+import dev.helm.hermes.ui.components.RailPhase
+import dev.helm.hermes.ui.components.LiveRail
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.IntrinsicSize
 import dev.helm.hermes.ui.components.HelmBar
 import dev.helm.hermes.ui.components.Lamp
 import dev.helm.hermes.ui.components.PanelTap
@@ -70,11 +74,9 @@ fun SessionsScreen(
             link = vm.link,
             onSettings = onSettings,
             trailing = {
-                PanelTap(onClick = { vm.refreshSessions() }) {
-                    Icon2(Icons.Default.Add, "New session") {
-                        vm.startNewSession()
-                        onOpen("")
-                    }
+                Icon2(Icons.Default.Add, "New session") {
+                    vm.startNewSession()
+                    onOpen("")
                 }
             },
         )
@@ -164,17 +166,17 @@ private fun SessionRow(
     onMenu: () -> Unit,
 ) {
     val c = LocalHelm.current
-    val rail = when {
-        session.pinned -> c.signal
-        active -> c.data
-        else -> c.ruleFaint
-    }
-    Row(Modifier.fillMaxWidth()) {
-        Box(
-            Modifier
-                .width(3.dp)
-                .height(74.dp)
-                .background(rail),
+    // The rail runs the full height of whatever the row turns out to be, rather
+    // than a fixed guess — a two-line preview must not leave it floating.
+    Row(Modifier.fillMaxWidth().height(IntrinsicSize.Min)) {
+        LiveRail(
+            phase = when {
+                session.pinned -> RailPhase.Working
+                active -> RailPhase.Held
+                else -> RailPhase.Dormant
+            },
+            modifier = Modifier.fillMaxHeight(),
+            thickness = 3.dp,
         )
         PanelTap(onOpen, Modifier.weight(1f)) {
             Column(Modifier.padding(start = 14.dp, end = 6.dp, top = 12.dp, bottom = 12.dp)) {
@@ -221,11 +223,7 @@ private fun SessionRow(
                 )
             }
         }
-        PanelTap(onMenu, Modifier.size(44.dp)) {
-            Box(Modifier.size(44.dp), contentAlignment = Alignment.Center) {
-                Icon2(Icons.Default.MoreVert, "Session actions") { onMenu() }
-            }
-        }
+        Icon2(Icons.Default.MoreVert, "Session actions", onMenu)
     }
 }
 
@@ -310,7 +308,7 @@ private fun ArchivedNote(archived: List<Session>, onRestoreNewest: (Session) -> 
     }
 }
 
-/** A square tap target wrapping an icon, sized for a thumb. */
+/** A 44dp square tap target wrapping one icon. Every icon control is this. */
 @Composable
 fun Icon2(
     icon: androidx.compose.ui.graphics.vector.ImageVector,

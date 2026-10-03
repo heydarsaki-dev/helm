@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -18,7 +19,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -26,7 +26,6 @@ import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import dev.helm.hermes.ui.theme.HelmShape
 import dev.helm.hermes.ui.theme.LocalHelm
@@ -297,10 +296,4 @@ private fun AnnotatedString.Builder.withSpan(style: SpanStyle, body: String) {
     val start = length
     append(body)
     addStyle(style, start, length)
-}
-
-/** A trimmed single line for list previews. */
-@Composable
-fun OneLine(text: String, color: Color, style: androidx.compose.ui.text.TextStyle) {
-    Text(text, style = style, color = color, maxLines = 1, overflow = TextOverflow.Ellipsis)
 }

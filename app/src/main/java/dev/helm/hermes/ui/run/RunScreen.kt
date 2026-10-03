@@ -55,6 +55,10 @@ import dev.helm.hermes.ui.components.EmptyState
 import dev.helm.hermes.ui.components.HelmBar
 import dev.helm.hermes.ui.components.Lamp
 import dev.helm.hermes.ui.components.PanelTap
+import dev.helm.hermes.ui.components.LiveRail
+import dev.helm.hermes.ui.components.RailPhase
+import dev.helm.hermes.ui.components.RailTick
+import dev.helm.hermes.ui.components.TickOutcome
 import dev.helm.hermes.ui.components.ReadoutRow
 import dev.helm.hermes.ui.components.Rule
 import dev.helm.hermes.ui.theme.HelmShape
@@ -250,14 +254,9 @@ private fun entriesSignature(vm: HelmViewModel) = vm.entries.size to vm.entries.
 
 @Composable
 private fun EntryRow(entry: Entry) {
-    val c = LocalHelm.current
     Row(Modifier.fillMaxWidth().height(IntrinsicSize.Min)) {
-        Box(
-            Modifier
-                .width(3.dp)
-                .fillMaxHeight()
-                .background(railColor(RailPhase.Dormant)),
-        )
+        // Settled history is a quiet spine. Only the run in progress lights it.
+        LiveRail(RailPhase.Dormant, Modifier.fillMaxHeight(), thickness = 3.dp)
         Spacer(Modifier.width(13.dp))
         Box(Modifier.weight(1f)) {
             when (entry) {
@@ -267,15 +266,6 @@ private fun EntryRow(entry: Entry) {
             }
         }
     }
-}
-
-@Composable
-private fun railColor(rail: RailPhase) = when (rail) {
-    RailPhase.Working -> LocalHelm.current.signal
-    RailPhase.Held -> LocalHelm.current.held
-    RailPhase.Good -> LocalHelm.current.dataDim
-    RailPhase.Bad -> LocalHelm.current.alarm
-    RailPhase.Dormant -> LocalHelm.current.ruleFaint
 }
 
 @Composable
@@ -364,16 +354,11 @@ private fun LiveRunBlock(live: Live) {
         else -> RailPhase.Dormant
     }
     Row(Modifier.fillMaxWidth().height(IntrinsicSize.Min)) {
-        val pulse = dev.helm.hermes.ui.theme.Motion.working()
-        Box(
-            Modifier
-                .width(3.dp)
-                .fillMaxHeight()
-                .background(
-                    railColor(rail).copy(
-                        alpha = if (live.busy) 0.45f + 0.55f * pulse.value else 1f,
-                    ),
-                ),
+        LiveRail(
+            phase = rail,
+            modifier = Modifier.fillMaxHeight(),
+            thickness = 3.dp,
+            lit = live.busy,
         )
         Spacer(Modifier.width(13.dp))
         Column(Modifier.weight(1f)) {
@@ -468,20 +453,15 @@ fun WorkBand(calls: List<dev.helm.hermes.ToolCall>) {
             Column(Modifier.padding(top = 6.dp)) {
                 calls.forEach { call ->
                     Row(Modifier.fillMaxWidth().padding(vertical = 3.dp)) {
-                        Box(Modifier.width(12.dp), contentAlignment = Alignment.CenterStart) {
-                            Box(
-                                Modifier
-                                    .width(10.dp)
-                                    .height(2.dp)
-                                    .background(
-                                        when {
-                                            call.seconds == null -> c.signal
-                                            call.failed -> c.alarm
-                                            else -> c.moss
-                                        },
-                                    ),
-                            )
-                        }
+                        // One tick per tool, written into the rail gutter.
+                        RailTick(
+                            outcome = when {
+                                call.seconds == null -> TickOutcome.Running
+                                call.failed -> TickOutcome.Bad
+                                else -> TickOutcome.Good
+                            },
+                            modifier = Modifier.padding(end = 2.dp),
+                        )
                         Text(
                             call.name,
                             style = Telemetry.code,

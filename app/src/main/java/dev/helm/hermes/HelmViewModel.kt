@@ -5,6 +5,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.AndroidViewModel
+import androidx.compose.foundation.layout.size
 import androidx.lifecycle.viewModelScope
 import dev.helm.hermes.data.Store
 import dev.helm.hermes.data.ThemeMode
