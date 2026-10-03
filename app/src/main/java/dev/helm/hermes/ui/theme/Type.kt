@@ -25,18 +25,18 @@ import dev.helm.hermes.R
  * Both Plex faces ship as variable fonts, so weights are requested through
  * `FontVariation` rather than by shipping nine static files.
  */
-private fun axisWeight(weight: Int) = FontVariation.Settings(FontVariation.weight(weight))
+private fun axisWeight(weight: Float) = FontVariation.Settings(FontVariation.weight(weight))
 
 val Display = FontFamily(
-    Font(R.font.space_grotesk, FontWeight.Medium, variationSettings = arrayOf(axisWeight(500))),
-    Font(R.font.space_grotesk, FontWeight.SemiBold, variationSettings = arrayOf(axisWeight(600))),
-    Font(R.font.space_grotesk, FontWeight.Bold, variationSettings = arrayOf(axisWeight(700))),
+    Font(R.font.space_grotesk, FontWeight.Medium, variationSettings = axisWeight(500f)),
+    Font(R.font.space_grotesk, FontWeight.SemiBold, variationSettings = axisWeight(600f)),
+    Font(R.font.space_grotesk, FontWeight.Bold, variationSettings = axisWeight(700f)),
 )
 
 val Body = FontFamily(
-    Font(R.font.plex_sans, FontWeight.Normal, variationSettings = arrayOf(axisWeight(400))),
-    Font(R.font.plex_sans, FontWeight.Medium, variationSettings = arrayOf(axisWeight(500))),
-    Font(R.font.plex_sans, FontWeight.SemiBold, variationSettings = arrayOf(axisWeight(600))),
+    Font(R.font.plex_sans, FontWeight.Normal, variationSettings = axisWeight(400f)),
+    Font(R.font.plex_sans, FontWeight.Medium, variationSettings = axisWeight(500f)),
+    Font(R.font.plex_sans, FontWeight.SemiBold, variationSettings = axisWeight(600f)),
 )
 
 val Mono = FontFamily(

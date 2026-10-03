@@ -102,7 +102,7 @@ class Gateway(
         )
     }
 
-    private fun call(path: String, method: String, body: JSONObject? = null): JSONObject =
+    private suspend fun call(path: String, method: String, body: JSONObject? = null): JSONObject =
         withContext(Dispatchers.IO) {
             val conn = open(path, method, "application/json")
             try {

@@ -661,7 +661,7 @@ private fun Composer(
                             canSend -> c.data
                             else -> c.rule
                         },
-                        HelmShape.panel,
+                        HelmShape.panelShape,
                     ),
                 contentAlignment = Alignment.Center,
             ) {

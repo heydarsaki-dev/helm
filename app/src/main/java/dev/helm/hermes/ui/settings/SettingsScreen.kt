@@ -371,7 +371,7 @@ private fun ToggleRow(
                     .height(22.dp)
                     .background(
                         if (checked) c.signal.copy(alpha = 0.22f) else c.raised,
-                        HelmShape.rule,
+                        HelmShape.ruleShape,
                     ),
                 contentAlignment = if (checked) Alignment.CenterEnd else Alignment.CenterStart,
             ) {
