@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
@@ -558,9 +559,7 @@ private fun ApprovalCard(
     Column(Modifier.fillMaxWidth().background(c.ground)) {
         Rule(strong = true)
         Column(Modifier.padding(horizontal = 16.dp, vertical = 14.dp)) {
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                Lamp("APPROVAL REQUESTED", c.held, lit = true)
-            }
+            Lamp("APPROVAL REQUESTED", c.held, lit = true)
             Spacer(Modifier.height(10.dp))
             Text(
                 "The agent wants to run something and is waiting for you.",
@@ -579,7 +578,12 @@ private fun ApprovalCard(
                 }
             }
             Spacer(Modifier.height(12.dp))
-            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+            // The gateway may advertise up to four choices; on a narrow phone
+            // they have to wrap rather than run off the edge.
+            FlowRow(
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                verticalArrangement = Arrangement.spacedBy(8.dp),
+            ) {
                 choices.forEach { choice ->
                     val tone = if (choice == ApprovalChoice.Deny) c.alarm else c.signal
                     PanelTap({ onAnswer(choice) }) {

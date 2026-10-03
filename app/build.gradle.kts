@@ -75,6 +75,7 @@ android {
             "-opt-in=androidx.compose.material3.ExperimentalMaterial3Api",
             // Remember/derived-state APIs Compose still marks experimental.
             "-opt-in=androidx.compose.runtime.ExperimentalComposeApi",
+            "-opt-in=androidx.compose.foundation.layout.ExperimentalLayoutApi",
         )
     }
     buildFeatures {

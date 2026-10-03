@@ -581,14 +581,23 @@ class HelmViewModel(app: Application) : AndroidViewModel(app) {
 
     fun setKeepScreenOn(value: Boolean) {
         store.keepScreenOn = value
+        keepScreenOn = value
     }
 
-    fun setShowThinking(value: Boolean) {
+    /**
+     * Written through a property that already has a private setter, so the
+     * view cannot write state directly. Naming a second function
+     * `setShowThinking` would collide with the setter Kotlin generates for the
+     * `showThinking` state — same JVM signature, two declarations.
+     */
+    fun toggleShowThinking(value: Boolean) {
         store.showThinking = value
+        showThinking = value
     }
 
     fun setResumeLast(value: Boolean) {
         store.resumeLast = value
+        resumeLast = value
     }
 
     fun loadModelChoices() {

@@ -142,7 +142,7 @@ fun SettingsScreen(
                 title = "Show the agent's reasoning",
                 detail = "Off hides it behind a disclosure instead of removing it.",
                 checked = vm.showThinking,
-                onChange = vm::setShowThinking,
+                onChange = vm::toggleShowThinking,
             )
             ToggleRow(
                 title = "Reopen the last session",
