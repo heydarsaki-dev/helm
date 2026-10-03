@@ -1,0 +1,10 @@
+<resources>
+    <!-- Compose owns all in-app styling; this only covers the pre-Compose
+         window so the launch frame is already the app ground colour. -->
+    <style name="Theme.Helm" parent="android:Theme.Material.NoActionBar">
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+        <item name="android:windowBackground">@color/ground</item>
+        <item name="android:windowLightStatusBar">false</item>
+    </style>
+</resources>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  The Helm mark: the live-trace rail from the app's Run screen, alone on a
+  field. One vertical spine, three ticks falling away to the right — a signal
+  decaying. It reads at 48dp because nothing here is thinner than 8% of the
+  canvas and nothing crosses anything else.
+-->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+
+    <path
+        android:fillColor="#FF8A3D"
+        android:pathData="M30,26 h7 a3,3 0 0 1 3,3 v50 a3,3 0 0 1 -3,3 h-7 a3,3 0 0 1 -3,-3 v-50 a3,3 0 0 1 3,-3 z" />
+
+    <path android:fillColor="#E8EDF2" android:pathData="M47,38 h30 v6 h-30 z" />
+    <path android:fillColor="#8496A6" android:pathData="M47,52 h21 v6 h-21 z" />
+    <path android:fillColor="#54646F" android:pathData="M47,66 h12 v6 h-12 z" />
+</vector>
