@@ -2,6 +2,7 @@ package dev.helm.hermes.ui.theme
 
 import android.app.Activity
 import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
@@ -10,18 +11,30 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.unit.dp
 import androidx.core.view.WindowCompat
 
 val LocalHelm = staticCompositionLocalOf { NightColors }
 
-/** Radii are a hierarchy, not a house style. Rules never round; panels do. */
+/**
+ * Radii are a hierarchy, not a house style. Rules never round; panels do.
+ *
+ * The bare names are the radii themselves, for anything that needs a number —
+ * stroke widths, indents that must match a corner. The `*Shape` names are the
+ * same values ready to hand to a composable.
+ */
 object HelmShape {
     val rule = 2.dp       // state rails, ticks, the live trace
     val notch = 4.dp      // chips, inline lamps, tight controls
     val panel = 8.dp      // bounded surfaces: composer, approval, tool failure
     val sheet = 14.dp     // sheets and the one card allowed to feel like an object
+
+    val ruleShape: Shape = RoundedCornerShape(rule)
+    val notchShape: Shape = RoundedCornerShape(notch)
+    val panelShape: Shape = RoundedCornerShape(panel)
+    val sheetShape: Shape = RoundedCornerShape(sheet)
 }
 
 @Composable

@@ -123,7 +123,7 @@ private fun ProseBlock(body: String) {
                     )
                 }
 
-                line.trimStart().startsWith("> ") -> QuoteLine(line.trimStart().removePrefix("> ").trim())
+                line.trimStart().startsWith("> ") -> QuoteLine(inline(line.trimStart().removePrefix("> ").trim()))
 
                 isBullet(line) -> BulletLine(inline(line.trimStart().substring(1).trim()))
 
@@ -200,7 +200,7 @@ private fun CodeBlock(language: String, body: String) {
     Column(
         Modifier
             .fillMaxWidth()
-            .background(c.panel, HelmShape.notch),
+            .background(c.panel, HelmShape.notchShape),
     ) {
         if (language.isNotEmpty()) {
             Box(

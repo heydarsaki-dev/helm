@@ -156,6 +156,7 @@ fun SettingsScreen(
             Row(Modifier.fillMaxWidth().padding(horizontal = 16.dp)) {
                 ThemeMode.entries.forEach { mode ->
                     Segmented(
+                        modifier = Modifier.weight(1f),
                         label = when (mode) {
                             ThemeMode.System -> "System"
                             ThemeMode.Night -> "Night"
@@ -218,7 +219,7 @@ private fun Field(
         Row(
             Modifier
                 .fillMaxWidth()
-                .background(c.panel, HelmShape.notch)
+                .background(c.panel, HelmShape.notchShape)
                 .padding(horizontal = 12.dp, vertical = 12.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {
@@ -260,7 +261,7 @@ private fun LinkReport(link: Link) {
         Modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp)
-            .background(c.panel, HelmShape.notch)
+            .background(c.panel, HelmShape.notchShape)
             .padding(14.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
@@ -378,7 +379,7 @@ private fun ToggleRow(
                     Modifier
                         .padding(horizontal = 3.dp)
                         .size(16.dp)
-                        .background(if (checked) c.signal else c.textFaint, HelmShape.rule),
+                        .background(if (checked) c.signal else c.textFaint, HelmShape.ruleShape),
                 )
             }
         }
@@ -388,9 +389,14 @@ private fun ToggleRow(
 
 /** Segmented with an underline, not a filled pill — the bar already owns fills. */
 @Composable
-private fun Segmented(label: String, selected: Boolean, onClick: () -> Unit) {
+private fun Segmented(
+    label: String,
+    selected: Boolean,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
     val c = LocalHelm.current
-    PanelTap(onClick, Modifier.weight(1f)) {
+    PanelTap(onClick, modifier) {
         Column(
             Modifier
                 .padding(top = 10.dp)
@@ -419,7 +425,7 @@ private fun PrimaryButton(label: String, onClick: () -> Unit) {
     PanelTap(onClick) {
         Box(
             Modifier
-                .background(c.signal, HelmShape.notch)
+                .background(c.signal, HelmShape.notchShape)
                 .padding(horizontal = 18.dp, vertical = 11.dp),
         ) {
             Text(label, style = MaterialTheme.typography.labelLarge, color = c.ground)
@@ -433,7 +439,7 @@ private fun SecondaryButton(label: String, onClick: () -> Unit) {
     PanelTap(onClick) {
         Box(
             Modifier
-                .background(c.raised, HelmShape.notch)
+                .background(c.raised, HelmShape.notchShape)
                 .padding(horizontal = 18.dp, vertical = 11.dp),
         ) {
             Text(label, style = MaterialTheme.typography.labelLarge, color = c.textMuted)
@@ -498,7 +504,7 @@ private fun CodeLine(text: String) {
     Box(
         Modifier
             .fillMaxWidth()
-            .background(c.panel, HelmShape.notch)
+            .background(c.panel, HelmShape.notchShape)
             .padding(12.dp),
     ) {
         Text(text, style = Telemetry.code, color = c.text, softWrap = true)

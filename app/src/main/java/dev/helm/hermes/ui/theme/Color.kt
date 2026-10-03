@@ -33,6 +33,7 @@ data class HelmColors(
     val signalWash: Color,
     val data: Color,
     val dataDim: Color,
+    val dataWash: Color,
     val moss: Color,
     val alarm: Color,
     val held: Color,

@@ -72,11 +72,11 @@ fun HelmMark(size: androidx.compose.ui.unit.Dp = 14.dp, modifier: Modifier = Mod
 @Composable
 fun LinkLamp(link: Link, modifier: Modifier = Modifier) {
     val c = LocalHelm.current
-    val (label, tone, lit) = when (link) {
-        Link.Unknown -> "UNKNOWN" to c.textFaint
-        Link.Checking -> "CHECKING" to c.textFaint
-        is Link.Reachable -> "ONLINE" to c.moss
-        is Link.Unreachable -> "OFFLINE" to c.alarm
+    val (label, tone, online) = when (link) {
+        Link.Unknown -> Triple("UNKNOWN", c.textFaint, false)
+        Link.Checking -> Triple("CHECKING", c.textFaint, false)
+        is Link.Reachable -> Triple("ONLINE", c.moss, true)
+        is Link.Unreachable -> Triple("OFFLINE", c.alarm, false)
     }
     Row(
         modifier,
@@ -203,7 +203,7 @@ fun SolidAction(
     PanelTap(onClick, enabled = enabled, modifier = modifier) {
         Box(
             Modifier
-                .background(if (enabled) tone else c.rule, HelmShape.panel)
+                .background(if (enabled) tone else c.rule, HelmShape.panelShape)
                 .padding(horizontal = 18.dp, vertical = 12.dp),
         ) {
             Text(

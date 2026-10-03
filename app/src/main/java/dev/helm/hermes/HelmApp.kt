@@ -67,7 +67,7 @@ fun HelmApp(vm: HelmViewModel) {
     }
     HelmTheme(dark = dark) {
         val c = LocalHelm.current
-        var route by remember { mutableStateOf(Route.Sessions) }
+        var route by remember { mutableStateOf<Route>(Route.Sessions) }
 
         // A run in progress owns the screen: the phone should not time out
         // while a shell command nobody can see is running.

@@ -92,7 +92,7 @@ class Gateway(
     private fun readBody(conn: HttpURLConnection): String =
         (conn.errorStream ?: conn.inputStream).bufferedReader().use { it.readText() }
 
-    private fun GatewayError.Companion.fromBody(status: Int, raw: String): GatewayError {
+    private fun gatewayError(status: Int, raw: String): GatewayError {
         val parsed = runCatching { JSONObject(raw).optJSONObject("error") }.getOrNull()
         return GatewayError(
             status = status,
@@ -117,7 +117,7 @@ class Gateway(
                 } else {
                     readBody(conn)
                 }
-                if (status !in 200..299) throw fromBody(status, raw)
+                if (status !in 200..299) throw gatewayError(status, raw)
                 if (raw.isBlank()) JSONObject() else JSONObject(raw)
             } catch (e: GatewayError) {
                 throw e
@@ -284,7 +284,7 @@ class Gateway(
             conn.setRequestProperty("Cache-Control", "no-cache")
             conn.readTimeout = readTimeoutSeconds * 1000
             val status = conn.responseCode
-            if (status !in 200..299) throw fromBody(status, readBody(conn))
+            if (status !in 200..299) throw gatewayError(status, readBody(conn))
 
             BufferedReader(conn.inputStream.reader(Charsets.UTF_8)).use { reader ->
                 val data = StringBuilder()

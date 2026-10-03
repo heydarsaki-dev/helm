@@ -342,10 +342,9 @@ class HelmViewModel(app: Application) : AndroidViewModel(app) {
                 banner = Banner("The agent didn't start", e.guidance(), Banner.Tone.Fault)
                 return@launch
             }
-            val started = Live(runId = runId, phase = RunPhase.Working)
-            live = started
+            live = Live(runId = runId, phase = RunPhase.Working)
             startClock()
-            follow(runId, started)
+            follow(runId)
         }
     }
 
@@ -360,17 +359,27 @@ class HelmViewModel(app: Application) : AndroidViewModel(app) {
         }
     }
 
-    private fun follow(runId: String, seed: Live) {
+    /**
+     * Follow one run's event stream until the gateway closes it.
+     *
+     * Every branch re-checks the run id before touching state. Cancelling one
+     * collector to start the next is not synchronised — the old job's `finally`
+     * runs after the new one has already installed itself, and without the
+     * guard the abandoned run would clear the live block of the run that
+     * replaced it.
+     */
+    private fun follow(runId: String) {
         runJob?.cancel()
         runJob = viewModelScope.launch {
             try {
-                gateway.events(runId).collect { event -> apply(event) }
+                gateway.events(runId).collect { event -> if (live?.runId == runId) apply(event) }
                 // A clean end-of-stream is the gateway closing after a terminal
                 // event. Anything else left the phase untouched.
-                if (live?.busy == true) {
+                if (live?.runId == runId && live?.busy == true) {
                     live = live?.copy(phase = RunPhase.Settled)
                 }
             } catch (e: GatewayError) {
+                if (live?.runId != runId) return@launch
                 val stillLive = live?.busy == true
                 live = live?.copy(
                     phase = if (stillLive) RunPhase.Working else RunPhase.Faulted,
@@ -378,7 +387,7 @@ class HelmViewModel(app: Application) : AndroidViewModel(app) {
                 )
                 if (!stillLive) banner = Banner("Lost the run", e.guidance(), Banner.Tone.Fault)
             } finally {
-                settle()
+                if (live?.runId == runId) settle()
             }
         }
     }

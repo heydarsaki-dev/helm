@@ -117,7 +117,7 @@ fun RunScreen(
                     PanelTap(vm::stopRun) {
                         Row(
                             Modifier
-                                .background(c.alarm.copy(alpha = 0.14f), HelmShape.notch)
+                                .background(c.alarm.copy(alpha = 0.14f), HelmShape.notchShape)
                                 .padding(horizontal = 10.dp, vertical = 7.dp),
                             verticalAlignment = Alignment.CenterVertically,
                         ) {
@@ -572,7 +572,7 @@ private fun ApprovalCard(
                 Box(
                     Modifier
                         .fillMaxWidth()
-                        .background(c.panel, HelmShape.notch)
+                        .background(c.panel, HelmShape.notchShape)
                         .padding(12.dp),
                 ) {
                     Text(command, style = Telemetry.code, color = c.text, softWrap = true)
@@ -585,7 +585,7 @@ private fun ApprovalCard(
                     PanelTap({ onAnswer(choice) }) {
                         Box(
                             Modifier
-                                .background(tone.copy(alpha = 0.14f), HelmShape.notch)
+                                .background(tone.copy(alpha = 0.14f), HelmShape.notchShape)
                                 .padding(horizontal = 12.dp, vertical = 9.dp),
                         ) {
                             Text(choice.verb, style = Telemetry.readout, color = tone)
@@ -630,7 +630,7 @@ private fun Composer(
             Box(
                 Modifier
                     .weight(1f)
-                    .background(c.panel, HelmShape.panel)
+                    .background(c.panel, HelmShape.panelShape)
                     .padding(horizontal = 14.dp, vertical = 12.dp),
             ) {
                 if (value.isEmpty()) {

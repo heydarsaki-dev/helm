@@ -65,7 +65,7 @@ fun SessionActions(
                 Box(
                     Modifier
                         .size(width = 28.dp, height = 3.dp)
-                        .background(c.rule, HelmShape.rule),
+                        .background(c.rule, HelmShape.ruleShape),
                 )
             }
         },
@@ -218,7 +218,7 @@ private fun SmallButton(
     dev.helm.hermes.ui.components.PanelTap(onClick) {
         Box(
             Modifier
-                .background(background, HelmShape.notch)
+                .background(background, HelmShape.notchShape)
                 .padding(horizontal = 14.dp, vertical = 8.dp),
         ) {
             Text(label, style = androidx.compose.material3.MaterialTheme.typography.labelMedium, color = ink)

@@ -97,10 +97,13 @@ fun SessionsScreen(
                         "Start a run and the agent will open one. Everything you send it is filed here, on the gateway, not on this phone."
                     },
                     action = {
-                        SolidAction("Start a run") {
-                            vm.startNewSession()
-                            onOpen("")
-                        }
+                        SolidAction(
+                            label = "Start a run",
+                            onClick = {
+                                vm.startNewSession()
+                                onOpen("")
+                            },
+                        )
                     },
                 )
             }
@@ -343,7 +346,7 @@ fun QuietField(
     val c = LocalHelm.current
     Box(
         modifier
-            .background(c.panel, HelmShape.notch)
+            .background(c.panel, HelmShape.notchShape)
             .padding(horizontal = 12.dp, vertical = 12.dp),
     ) {
         if (value.isEmpty()) {

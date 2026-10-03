@@ -59,7 +59,7 @@ fun Lamp(
 ) {
     Box(
         modifier
-            .background(tone.copy(alpha = if (lit) 0.18f else 0.10f), HelmShape.notch)
+            .background(tone.copy(alpha = if (lit) 0.18f else 0.10f), HelmShape.notchShape)
             .padding(horizontal = 6.dp, vertical = 3.dp),
     ) {
         Text(
@@ -146,17 +146,17 @@ enum class RailPhase { Dormant, Working, Held, Good, Bad }
 @Composable
 fun RailTick(outcome: TickOutcome, modifier: Modifier = Modifier) {
     val c = LocalHelm.current
-    val color = when (outcome) {
+    val target = when (outcome) {
         TickOutcome.Running -> c.signal
         TickOutcome.Good -> c.moss
         TickOutcome.Bad -> c.alarm
     }
-    val color by animateColorAsState(color, tween(Motion.SettleMs), label = "tick")
+    val tick by animateColorAsState(target, tween(Motion.SettleMs), label = "tick")
     Box(
         modifier
             .width(10.dp)
             .height(2.dp)
-            .background(color),
+            .background(tick),
     )
 }
 

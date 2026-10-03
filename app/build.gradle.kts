@@ -68,6 +68,14 @@ android {
     }
     kotlinOptions {
         jvmTarget = "17"
+        freeCompilerArgs = freeCompilerArgs + listOf(
+            // Variable-font axes: Font(resId, weight, style, variationSettings).
+            "-opt-in=androidx.compose.ui.text.ExperimentalTextApi",
+            // ModalBottomSheet and friends.
+            "-opt-in=androidx.compose.material3.ExperimentalMaterial3Api",
+            // Remember/derived-state APIs Compose still marks experimental.
+            "-opt-in=androidx.compose.runtime.ExperimentalComposeApi",
+        )
     }
     buildFeatures {
         compose = true
