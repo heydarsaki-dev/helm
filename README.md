@@ -141,13 +141,30 @@ went wrong and what to do about it, never that they are sorry.
 
 ## Building
 
+Every push runs [`.github/workflows/android.yml`](.github/workflows/android.yml),
+which lints, assembles a debug and an unsigned release APK, and uploads both as
+the **helm-apks** artifact:
+
+```sh
+gh run watch
+gh run download --name helm-apks
+```
+
+Or locally, with JDK 17+ and Android SDK platform 35:
+
 ```sh
 ./gradlew :app:assembleDebug
 ```
 
-The APK lands in `app/build/outputs/apk/debug/`. Requirements: JDK 17+,
-Android SDK with platform 35. No third-party runtime libraries — the transport
-is `HttpURLConnection` and the JSON is `org.json`, both from the platform.
+Either way the APK lands in `app/build/outputs/apk/`.
+
+To produce a *signed* release, add three repository secrets —
+`ANDROID_KEYSTORE_BASE64` (the base64 of a `.jks`), `ANDROID_KEY_ALIAS` and
+`ANDROID_KEY_PASSWORD` — and push a `v*` tag. The signing branch in
+`build.gradle.kts` is inert without them, so a plain clone still builds.
+
+There are no third-party runtime libraries. The transport is
+`HttpURLConnection`, the JSON is `org.json`, and the type is three font files.
 
 ---
 

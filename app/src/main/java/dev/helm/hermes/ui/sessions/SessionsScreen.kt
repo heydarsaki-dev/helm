@@ -170,9 +170,13 @@ private fun SessionRow(
     // than a fixed guess — a two-line preview must not leave it floating.
     Row(Modifier.fillMaxWidth().height(IntrinsicSize.Min)) {
         LiveRail(
+            // Three states, three colours: amber keeps it above the rest,
+            // green marks the one you are in, faint is everything else. Held
+            // yellow is reserved for an agent waiting on a decision, so a
+            // session row must never wear it.
             phase = when {
                 session.pinned -> RailPhase.Working
-                active -> RailPhase.Held
+                active -> RailPhase.Good
                 else -> RailPhase.Dormant
             },
             modifier = Modifier.fillMaxHeight(),

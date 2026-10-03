@@ -20,7 +20,11 @@ android {
     compileSdk = 35
 
     if (signingReady) {
-        val decoded = File(keystoreFile.get().asFile)
+        // Materialise the keystore from the CI secret into the build dir. With
+        // no secrets present this whole branch is skipped and nothing on disk
+        // changes, so a plain clone still produces an unsigned release APK.
+        val decoded = keystoreFile.get().asFile
+        decoded.parentFile?.mkdirs()
         decoded.writeBytes(Base64.getDecoder().decode(keystoreB64!!))
         signingConfigs {
             create("ci") {
