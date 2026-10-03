@@ -581,7 +581,6 @@ class HelmViewModel(app: Application) : AndroidViewModel(app) {
 
     fun setKeepScreenOn(value: Boolean) {
         store.keepScreenOn = value
-        keepScreenOn = value
     }
 
     /**
@@ -597,7 +596,6 @@ class HelmViewModel(app: Application) : AndroidViewModel(app) {
 
     fun setResumeLast(value: Boolean) {
         store.resumeLast = value
-        resumeLast = value
     }
 
     fun loadModelChoices() {
